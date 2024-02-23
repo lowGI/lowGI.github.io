@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Betty & Billy</title>
+	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css')}}">
+	<link rel="stylesheet" href="../static/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<audio id="bgm" autoplay loop>
+		<source src="https://orangefreesounds.com/wp-content/uploads/2022/01/Forest-creek-noise-and-singing-birds-relaxing-nature-sounds.mp3" type="audio/mpeg">
+	</audio>
+
+	<audio id="billy-bgm" loop>
+		<source src="https://www.soundjay.com/misc/sounds/music-box-1.mp3" type="audio/mpeg">
+	</audio>
+
+	<audio id="heart-beat" loop>
+		<source src="https://freesound.org/data/previews/535/535478_10196790-lq.ogg" type="audio/ogg">
+		<source src="https://freesound.org/data/previews/485/485076_5121236-lq.mp3" type="audio/mpeg">	
+	</audio>
+
+	<audio id="mess-sent">
+		<source src="https://bigsoundbank.com/UPLOAD/mp3/1313.mp3" type="audio/mpeg">
+		<source src="https://bigsoundbank.com/UPLOAD/ogg/1313.ogg" type="audio/ogg">
+	</audio>
+	
+	<audio id="screen-shiver" loop>
+		<source src="https://www.soundjay.com/mechanical/sounds/transformer-1.mp3" type="audio/mpeg">
+	</audio>
+
+	<audio id="knife-stab">
+		<source src="https://freesound.org/data/previews/35/35213_307822-lq.ogg" type="audio/ogg">
+		<source src="https://freesound.org/data/previews/35/35213_307822-lq.mp3" type="audio/mpeg">
+	</audio>
+	
+	<div class="container">
+		<div class="smartphone">
+			<div class="chat">
+				<div class="chat-header">
+					<div class="profile">
+						<div class="left">
+							<img src="https://support.upwork.com/hc/article_attachments/360040474034/chatbot-data.png" id="bot">
+							<h2>Betty Bot</h2>
+							<span id="online-status">● Online</span>
+						</div>
+						<div class="right">
+							<div id="heart-rate">
+								<svg version="1.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="90px" height="50px" viewBox="0 0 150 73" enable-background="new 0 0 150 73" xml:space="preserve">
+								  <polyline id="health" fill="none" stroke="#5DE23C" stroke-width="2" stroke-miterlimit="5" points="0,45.486 38.514,45.486 44.595,33.324 50.676,45.486 57.771,45.486 62.838,55.622 71.959,9 80.067,63.729 84.122,45.486 97.297,45.486 103.379,40.419 110.473,45.486 150,45.486"
+								  />
+								</svg>
+								<div id="fade-in"></div>	
+								<div id="fade-out"></div>	
+							</div>
+							<span id="health-status">&nbsp;&nbsp;Fine</span>
+						</div>
+					</div>
+				</div>
+				<div class="chat-body">
+					<span>Today</span>
+				</div>
+				<div class="chat-footer">
+					<div class="game">
+						<img src="https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_location_on_48px-512.png" id="game-icon">
+					</div>
+					<form autocomplete="off">
+						<div class="user-input">
+							<input id="text" type="text" name="msg" placeholder="Message" class="form-control">
+							<button type="submit" id="send" hidden></button>
+						</div>
+					</form>
+					<div id="mic">
+						<img src="https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-2/254000/98-512.png" onclick="record()">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		function record(){
+			var recognition = new webkitSpeechRecognition();
+			recognition.lang = "en-US";
+	
+			recognition.onresult = function(event){
+				document.getElementById("text").value = event.results[0][0].transcript;
+				document.getElementById("send").click();
+			}
+			recognition.start();
+		}
+
+		function getBilly(){
+			//stop bgm
+			document.getElementById("bgm").pause();
+			//pause screen shiver sound
+			document.getElementById("screen-shiver").pause();
+			//play billy bgm
+			document.getElementById("billy-bgm").play();
+			//play heart beat sound
+			document.getElementById("heart-beat").play();
+			//set chat header
+			document.getElementsByTagName("h2")[0].innerHTML = "Billy Bot";
+			document.getElementById("bot").setAttribute("src","https://pbs.twimg.com/media/EIJD2WBXkAI1s0x.jpg");
+			//set chat content
+			document.getElementsByClassName("chat")[0].style.animation = "none";
+			var chatBox = document.getElementsByClassName("chat-body")[0];
+			chatBox.style.animation = "none";
+			chatBox.style.backgroundImage = `linear-gradient( rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.6)), url("https://pbs.twimg.com/media/EIJD2WBXkAI1s0x.jpg")`;
+			//set chat footer
+			document.getElementById("game-icon").setAttribute("src","https://upload.wikimedia.org/wikipedia/commons/8/89/Jogo_da_velha_-_tic_tac_toe.png");	
+			
+			//hide Betty's chat
+			var bettyChat = document.getElementsByClassName("chat-l");
+			if(bettyChat != null){
+				for(var i = 0; i < bettyChat.length; i++){
+					bettyChat[i].style.visibility = "hidden";
+				}	
+			}
+			
+			//show billy's chat
+			var billyChat = document.getElementsByClassName("chat-l-game");
+			if(billyChat != null){	
+				for(var i = 0; i < billyChat.length; i++){
+					billyChat[i].style.visibility = "visible";
+				}	
+				
+			}
+
+			//hide normal chat
+			var normalChat = document.getElementsByClassName("chat-r");
+			if(normalChat != null){
+				for(var i = 0; i < normalChat.length; i++){
+					normalChat[i].style.visibility = "hidden";
+				}	
+			}
+			
+			//show game chat
+			var gameChat = document.getElementsByClassName("chat-r-game");
+			if(gameChat != null){	
+				for(var i = 0; i < gameChat.length; i++){
+					gameChat[i].style.visibility = "visible";
+				}		
+			}	
+		}	
+
+		function getBetty(){
+			//play bgm
+			document.getElementById("bgm").play();
+			//pause billy bgm
+			document.getElementById("billy-bgm").pause();
+			//pause heart beat
+			document.getElementById("heart-beat").pause();
+			//set chat header
+			document.getElementsByTagName("h2")[0].innerHTML = "Betty Bot";
+			document.getElementById("bot").setAttribute("src","https://support.upwork.com/hc/article_attachments/360040474034/chatbot-data.png");
+			//set chat content
+			document.getElementsByClassName("chat")[0].style.animation = "glow 5s ease-in-out infinite alternate";
+			var chatBox = document.getElementsByClassName("chat-body")[0];
+			chatBox.style.animation = "none";
+			chatBox.style.backgroundImage = "none";
+			chatBox.style.backgroundColor = "#f1f0e8";
+			//set chat footer
+			document.getElementById("game-icon").setAttribute("src","https://cdn0.iconfinder.com/data/icons/google-material-design-3-0/48/ic_location_on_48px-512.png");
+			
+			//hide billy's chat
+			var billyChat = document.getElementsByClassName("chat-l-game");
+			if(billyChat != null){	
+				for(var i = 0; i < billyChat.length; i++){
+					billyChat[i].style.visibility = "hidden";
+				}
+			}
+			
+			//show Betty's chat
+			var bettyChat = document.getElementsByClassName("chat-l");
+			if(bettyChat != null){
+				for(var i = 0; i < bettyChat.length; i++){
+					bettyChat[i].style.visibility = "visible";
+				}
+			}
+			
+			//hide game chat
+			var gameChat = document.getElementsByClassName("chat-r-game");
+			if(gameChat != null){	
+				for(var i = 0; i < gameChat.length; i++){
+					gameChat[i].style.visibility = "hidden";
+				}	
+				
+			}
+
+			//show normal chat
+			var normalChat = document.getElementsByClassName("chat-r");
+			if(normalChat != null){
+				for(var i = 0; i < normalChat.length; i++){
+					normalChat[i].style.visibility = "visible";
+				}	
+			}	
+		}
+
+		function nbsp(num){
+			string = "";
+			for(var i = 0; i < num; i++){
+				string += "&nbsp;";
+			}
+			return string;
+		}
+
+		function scrollToBottom(){
+			var messageBody = document.querySelector('.chat-body');
+			messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+		}
+	</script>
+	
+	<script>
+		var step = 0;
+		var checkPoint = 10; //<----------billy's appearance here
+		var health = 3;
+		var isBillyGet = false;
+
+		$(document).ready(function() {
+			$("form").on("submit", function(event) {
+				document.getElementById("mess-sent").play();
+				//step ++ when message is sent once
+				//normal chat
+				if(step < checkPoint){
+					if((checkPoint - step) == 1){
+						document.getElementsByClassName("chat-body")[0].style.animation = "shiver 1s linear .5s infinite";
+						document.getElementById('screen-shiver').play();
+					}
+					var input = $("#text").val();
+					var userHtml = 
+						`<div class="chat-r">
+							<div class="sp"></div>
+							<div class="mess mess-r">
+								<p>${input.replace(/fuck/i,"f***")}</p>
+							</div>
+						</div>`;
+					$("#text").val("");
+					$(".chat-body").append(userHtml);
+					//scrollbar to bottom
+					scrollToBottom();
+					$.ajax({
+						data: {
+							msg: input,
+						},
+						type: "POST",
+						url: "/get",
+					}).done(function(data) {
+						var botHtml = 
+							`<div class="chat-l">
+								<div class="mess">
+									<p>${data}</p>
+								</div>
+							</div>`;
+						const delayReply =  setTimeout(() => {
+							$(".chat-body").append($.parseHTML(botHtml));
+							document.getElementById("mess-sent").play();
+							scrollToBottom();
+						}, 1000);
+
+						var voices = window.speechSynthesis.getVoices();
+						var toSpeak = new SpeechSynthesisUtterance(data);
+						//toSpeak.voice = voices[7]; //<------to change voice here!!!
+
+						const delaySpeech = setTimeout(() => {
+							window.speechSynthesis.speak(toSpeak);
+						}, 2000);
+						
+						if(data.includes("Google")){
+							const googleIt = setTimeout(() => {
+								if(input.toLowerCase().includes("google")){
+									input = input.toLowerCase().replace("google","");
+								}else if(input.toLowerCase().includes("search")){
+									input = input.toLowerCase().replace("search","");
+								}
+								var url = "http://www.google.com/search?q=";
+								window.open(url + input);
+							}, 3000);	
+						}else if(data == "Hang in there!"){
+							const call999 = setTimeout(() => {
+								window.open("tel://999");
+							}, 3000);	
+						}else if(data == "OK! Please wait for a moment"){
+							const redirect = setTimeout(() => {
+								var arr = input.split(" ");
+								var des = arr[arr.length - 1].toLowerCase();
+								window.open("http://www." + des + ".com");
+							}, 3000)
+						}
+					});
+					
+				//billy appear
+				}else{
+					if(!isBillyGet){
+						getBilly();
+						isBillyGet = true;
+						boardWithNum = nbsp(3) + "1" + nbsp(3) + '|' + nbsp(3) +  "2" + nbsp(3) + '|' + nbsp(3) + "3" + '<br>--------------------<br>' + nbsp(3) + "4" + nbsp(3) + '|' + nbsp(3) + "5" + nbsp(3) + '|' + nbsp(3) + "6" + '<br>--------------------<br>' + nbsp(3) + "7" + nbsp(3) + '|' + nbsp(3) + "8" + nbsp(3) + '|' + nbsp(3) + "9" + '<br>';
+						var userHtml = 
+							`<div class="chat-r-game">
+								<div class="sp"></div>
+								<div class="mess mess-r-game">
+									<p>I want to play a game</p>
+									<p>${nbsp(8)}X's First...</p>
+								</div>
+							</div>
+							<div class="chat-r-game">
+								<div class="sp"></div>
+								<div class="mess mess-r-game">
+									<p>${boardWithNum}</p>
+								</div>
+							</div>
+							<div class="chat-r-game">
+								<div class="sp"></div>
+								<div class="mess mess-r-game">
+									<p>Choose a positon</p>
+								</div>
+							</div>`;
+						$("#text").val("");
+						$(".chat-body").append(userHtml);
+						//scrollbar to bottom
+						scrollToBottom();
+					}else{
+						var input = $("#text").val();
+						var userHtml = 
+							`<div class="chat-r-game">
+								<div class="sp"></div>
+								<div class="mess mess-r-game">
+									<p>X chose position ${input.replace(/fuck/i,"f***")}</p>
+								</div>
+							</div>`;
+						$("#text").val("");
+						$(".chat-body").append(userHtml);
+						//scrollbar to bottom
+						scrollToBottom();
+						var move = input.slice(input.length - 1);
+						
+						$.ajax({
+							data: {
+								msg: "IWTPAG_" + move,
+							},
+							type: "POST",
+							url: "/get",
+						}).done(function(data) {
+							if((data == "win") || (data == "lose") || (data == "tie")){
+								var chatBox = document.getElementsByClassName("chat-body")[0];
+								if(data == "lose"){
+									health -= 1;
+									document.getElementById("knife-stab").play();
+									var healthStatus = document.getElementById("health-status");
+									var healthLine = document.getElementById("health"); //change health
+									if(health == 2){
+										healthLine.setAttribute("stroke","#f5bd1f");
+										healthStatus.style.color = "#f5bd1f";
+										healthStatus.innerHTML = "Caution";
+									}else if(health == 1){
+										healthLine.setAttribute("stroke","#ff0000");
+										healthStatus.style.color = "#ff0000";
+										healthStatus.innerHTML = "Danger";
+									}else if(health == 0){
+										window.open("https://www.youtube.com/watch?v=xvFZjo5PgG0");
+										console.log("Health restored!");
+										health = 3;
+										healthLine.setAttribute("stroke","#5DE23C");
+										healthStatus.style.color = "#5DE23C";
+										healthStatus.innerHTML = nbsp(2) + "Fine";
+										
+									}else{
+										console.log("Unexpected value");	
+									}
+								}else{
+									//TODO: Add effects when win or tie (in the future)
+								}
+								getBetty();
+								//initialise
+								step = 0;
+								isBillyGet = false;
+							}else{
+								var botHtml = 
+									`<div class="chat-l-game">
+										<div class="mess-game">
+											<p>${data}</p>
+										</div>
+									</div>`;
+								const delayReply =  setTimeout(() => {
+									$(".chat-body").append($.parseHTML(botHtml));
+									document.getElementById("mess-sent").play();
+									scrollToBottom();
+								}, 1000);
+							}
+						});	
+					}	
+				}
+				step++;
+				event.preventDefault();	
+			});	
+		});
+	</script>
+</body>
+</html>
