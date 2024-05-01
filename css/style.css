@@ -1,3 +1,7 @@
+:root {
+    --blue: rgba(0, 132, 255, 0.994);
+}
+
 body {
     background: #000000;
     color: #999;
@@ -180,11 +184,14 @@ h5 {
 }
 
 #home h1 {
-    border: 2px solid #D43F52;
-    color: #D43F52;
+    /*border: 2px solid #D43F52;*/
+    border-bottom: 1px solid #ffffff;
+    color: #ffffff;
     display: inline-block;
-    letter-spacing: 6px;
-    padding: 25px 35px;
+    letter-spacing: 3px;
+    font-size: 45px;
+    font-family:Arial, Helvetica;
+    padding: 25px 30px;
     margin: 30px 0;
 }
 
@@ -206,7 +213,7 @@ h5 {
 }
 
 #home .btn:hover {
-    color: #D43F52;
+    color: var(--blue);
     border-color: transparent;
 }
 
@@ -228,7 +235,7 @@ h5 {
 #work .media .fa {
     border: 2px solid #fff;
     border-radius: 50%;
-    color: #D43F52;
+    color: var(--blue);
     font-size: 24px;
     margin-right: 24px;
     width: 60px;
@@ -255,7 +262,7 @@ h5 {
 /* start about */
 #about h4 {
     padding: 15px 0;
-    color: #D43F52;
+    color: var(--blue);
 }
 
 #about .progress {
@@ -265,7 +272,7 @@ h5 {
 }
 
 #about .progress .progress-bar-danger {
-    background-color: #D43F52;
+    background-color: var(--blue);
 }
 
 #about .text-top {
@@ -303,7 +310,7 @@ h5 {
 }
 
 #portfolio .portfolio-thumb .portfolio-overlay {
-    background: #e8213c;
+    background: var(--blue);
     top: 0;
     left: 0;
     right: 0;
